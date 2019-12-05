@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,11 +21,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
     }
 
 
     @Override
     protected void onResume() {
+        final TextView ambiendText = (TextView) findViewById(R.id.ambiendText);
+        final TextView humidityText = (TextView) findViewById(R.id.humidityText);
+
         super.onResume();
         manager = (SensorManager)getSystemService(SENSOR_SERVICE);
         List<Sensor> sensors = manager.getSensorList(Sensor.TYPE_ALL);
@@ -39,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
                 Log.i("SENSORS","ambient temperature = " + sensorEvent.values[0]);
+                ambiendText.setText("ambient temperature =  " + sensorEvent.values[0]);
                 Log.i("SENSORS","absolute Humidity = " + sensorEvent.values[1]);
+                humidityText.setText("absolute Humidity =  " + sensorEvent.values[1]);
             }
 
             @Override
@@ -48,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         };
         manager.registerListener(listener, ambientTemperatureSensor,50);
         manager.registerListener(listener, absoluteHumidity, 50);
+
+
     }
 
     @Override
